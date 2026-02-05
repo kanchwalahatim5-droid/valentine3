@@ -1,68 +1,194 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Will you be my Valentine?</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;600&display=swap" rel="stylesheet">
-</head>
-<body>
-  <main class="scene">
-    <!-- Cute stickers (inline SVGs) -->
-    <div class="stickers" aria-hidden="true">
-      <svg class="sticker s1" viewBox="0 0 64 64" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" fill-rule="evenodd">
-          <circle cx="32" cy="32" r="30" fill="#FFD7E6"/>
-          <path d="M43 22c-3.3-6-12.7-6-16 0-3.3-6-12.7-6-16 0-3 5.4 1.5 12 8 16 6.5-4 11-10.6 8-16z" fill="#FF6B9A"/>
-        </g>
-      </svg>
+:root{
+  --bg: linear-gradient(180deg,#fff0f6 0%, #fff6f9 40%, #fff 100%);
+  --accent: #FF6B9A;
+  --accent-2: #FF9BC2;
+  --muted: #6B6B6B;
+}
 
-      <svg class="sticker s2" viewBox="0 0 64 64" width="64" height="64" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" fill-rule="evenodd">
-          <rect rx="12" width="64" height="64" fill="#FFF3CE"/>
-          <path d="M20 36c6-8 18-8 24 0 6-8 18-8 24 0" stroke="#FFB86B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="scale(.9) translate(3,4)"/>
-          <circle cx="20" cy="20" r="3" fill="#FF6B9A"/>
-          <circle cx="44" cy="18" r="3" fill="#FF6B9A"/>
-        </g>
-      </svg>
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color:#222;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  user-select:none;
+}
 
-      <svg class="sticker s3" viewBox="0 0 64 64" width="70" height="70" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" fill-rule="evenodd">
-          <rect width="64" height="64" rx="10" fill="#E6F7FF"/>
-          <path d="M22 28c3.5-3 8-3 11.5 0 3.5-3 8-3 11.5 0" stroke="#69C0FF" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="24" cy="24" r="2.5" fill="#555"/>
-          <circle cx="40" cy="24" r="2.5" fill="#555"/>
-        </g>
-      </svg>
-    </div>
+.scene{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+  position:relative;
+  overflow:hidden;
+}
 
-    <section class="card" role="region" aria-labelledby="proposal-heading">
-      <h1 id="proposal-heading" class="heading">Will you be my Valentine, <span class="name">kulsum</span>?</h1>
+/* Stickers */
+.stickers{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+.sticker{
+  position:absolute;
+  transform-origin:center;
+  opacity:.98;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.06));
+  width:96px;
+  height:96px;
+}
+.s1{ top:6%; left:6%; transform:rotate(-6deg) scale(1); }
+.s2{ bottom:8%; right:8%; transform:rotate(10deg) scale(.95); }
+.s3{ top:18%; right:14%; transform:rotate(-12deg) scale(.9); }
 
-      <p class="sub">I made this just for you — full of cute stickers and love 💕</p>
+/* Card */
+.card{
+  background: rgba(255,255,255,0.98);
+  border-radius:20px;
+  padding:36px;
+  width:min(720px, 94vw);
+  max-width:720px;
+  text-align:center;
+  box-shadow: 0 12px 40px rgba(255,107,154,0.08);
+  position:relative;
+  z-index:2;
+}
 
-      <div class="cta-wrap">
-        <button id="proposal-btn" class="proposal" draggable="false" aria-label="Proposal button">
-          Yes? 💖
-        </button>
-      </div>
-    </section>
+.heading{
+  font-family: "Pacifico", cursive;
+  font-size: clamp(28px, 6vw, 48px);
+  margin:0 0 8px;
+  color:#FF4D88;
+  letter-spacing:0.4px;
+}
 
-    <!-- Modal shown when button clicked -->
-    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="modal-card" role="document">
-        <h2>Yay! 🌸</h2>
-        <p>You clicked the button — love you, <strong>kulsum</strong>!</p>
-        <div class="modal-actions">
-          <button id="close-modal" class="btn-secondary">Close</button>
-        </div>
-      </div>
-    </div>
+/* Highlighted name */
+.name{
+  color: var(--accent-2);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight:700;
+}
 
-    <footer class="credit">Made with ♥ for kulsum</footer>
-  </main>
+/* Subtext */
+.sub{
+  color:var(--muted);
+  margin:0 0 22px;
+}
 
-  <script src="script.js"></script>
-</body>
-</html>
+/* CTA area: contains both buttons and constrains No button movement */
+.cta-wrap{ display:flex; justify-content:center; gap:12px; align-items:center; margin-top:6px; }
+.cta-area{
+  position:relative;
+  width:min(420px,78vw);
+  height:92px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+}
+
+/* Primary Yes button */
+.proposal{
+  appearance:none;
+  -webkit-appearance:none;
+  border: none;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+  color:white;
+  padding:16px 28px;
+  border-radius:999px;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow: 0 8px 24px rgba(255,107,154,0.18);
+  transition: transform .15s ease, box-shadow .15s ease;
+  outline:none;
+  z-index:3;
+  position:relative;
+  user-select:none;
+}
+
+/* Evasive No button */
+.no-btn{
+  position:absolute;
+  left: calc(50% + 140px);
+  transform: translate(-50%, 0);
+  top: 50%;
+  transform-origin:center;
+  transform: translate(-50%,-50%);
+  appearance:none;
+  border: 2px solid rgba(0,0,0,0.06);
+  background: #fff;
+  color:#333;
+  padding:12px 18px;
+  border-radius:999px;
+  font-size:16px;
+  cursor:pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform .22s cubic-bezier(.2,.9,.3,1), left .22s, top .22s;
+  z-index:4;
+  user-select:none;
+}
+
+/* small active feedback (but we still dodge) */
+.no-btn:active{ transform: scale(.98) translate(-50%,-50%); }
+
+/* modal */
+.modal{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.28);
+  visibility:hidden;
+  opacity:0;
+  transition: opacity .18s ease, visibility .18s ease;
+  z-index:10;
+  pointer-events:none;
+}
+.modal[aria-hidden="false"]{
+  visibility:visible;
+  opacity:1;
+  pointer-events:auto;
+}
+
+.modal-card{
+  background:white;
+  padding:22px;
+  border-radius:14px;
+  width:min(420px,90vw);
+  text-align:center;
+  box-shadow:0 18px 40px rgba(0,0,0,0.12);
+}
+
+.modal h2{ margin:0 0 8px; color:var(--accent); font-family:Pacifico, cursive; font-size:24px; }
+.modal p{ margin:0 0 16px; color:var(--muted); }
+
+/* buttons in modal */
+.btn-secondary{
+  background:transparent;
+  border:1px solid #f0d6df;
+  padding:8px 14px;
+  border-radius:10px;
+  color:var(--accent);
+  cursor:pointer;
+}
+
+/* footer */
+.credit{
+  position:fixed;
+  bottom:12px;
+  left:12px;
+  font-size:12px;
+  color:rgba(0,0,0,0.35);
+  z-index:1;
+}
+
+/* responsive tweaks */
+@media (max-width:520px){
+  .stickers .sticker{ display:none; } /* simplify on small screens */
+  .card{ padding:20px; border-radius:16px;}
+  .heading{ font-size:28px; }
+  .proposal{ padding:14px 22px; font-size:16px; }
+  .cta-area{ height:84px; }
+}
